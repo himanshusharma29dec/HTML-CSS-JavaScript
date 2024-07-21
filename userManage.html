@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body style="margin: 0">
+    <form onsubmit="handleFormSubmit(event)">
+      <label for="name">Name</label>
+      <input type="text" name="name" id="name" />
+      <label for="email">Email</label>
+      <input type="email" name="email" id="email" />
+      <button type="submit">Submit</button>
+    </form>
+    <ul id="user-list"></ul>
+  </body>
+  <script src="index.js"></script>
+  <script>
+    function handleFormSubmit(event) {
+      event.preventDefault();
+      
+      const name = document.getElementById('name').value;
+      const email = document.getElementById('email').value;
+      
+      let users = JSON.parse(localStorage.getItem('users')) || [];
+      users.push({ name, email });
+      
+      localStorage.setItem('users', JSON.stringify(users));
+      
+      displayUsers();
+    }
+
+    function displayUsers() {
+      const userList = document.getElementById('user-list');
+      userList.innerHTML = '';
+      
+      const users = JSON.parse(localStorage.getItem('users')) || [];
+      
+      users.forEach(user => {
+          const listItem = document.createElement('li');
+          listItem.textContent = `${user.name} - ${user.email}`;
+          userList.appendChild(listItem);
+      });
+    }
+
+    const form = document.querySelector('form');
+    form.addEventListener('submit', handleFormSubmit);
+  </script>
+</html>
