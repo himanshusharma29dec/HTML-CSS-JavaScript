@@ -1,0 +1,76 @@
+body {
+  font-family: Arial, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 95vh;
+  background-color: #f9f9f9;
+}
+
+.container {
+  text-align: center;
+  max-width: 300px;
+  padding: 20px 50px 200px;
+}
+
+.title {
+  color: rebeccapurple;
+  font-size: 2em;
+  margin-bottom: 20px;
+}
+
+.search-section {
+  margin-bottom: 30px;
+}
+
+.search-section label {
+  color: #4CAF50;
+  font-weight: bold;
+}
+
+.note-info {
+  font-weight: bold;
+  margin-top: 20px;
+  margin-bottom: 0px;
+}
+
+.note-info span {
+  color: #f44336 ;
+  margin-right: 20px;
+}
+
+.note-input-section {
+  padding: 5px 40px 0 40px;
+  margin-bottom: 0px;
+}
+
+.note-input-section label {
+  color: brown;
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.note-input-section input,
+.note-input-section textarea {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.add-button{
+  padding: 10px 20px;
+  margin-top: 10px;
+  border: none;
+  background-color: #4CAF50;
+  color: white;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.add-button:hover{
+  outline: auto;
+  opacity: 0.9;
+}

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Notebook</title>
+		<link rel="stylesheet" href="style_REST_API.css" />
+	</head>
+	<body>
+		<div class="container">
+			<h1 class="title">NoteBook</h1>
+			<div class="search-section">
+				<label for="search">Search Notes:</label>
+				<input type="text" id="search" placeholder="Search..." />
+				<div class="note-info">
+					<span id="total-notes">Total Notes: 0</span>
+					<span>Showing: <span id="showing-notes">0</span></span>
+				</div>
+			</div>
+
+			<div class="note-input-section">
+				<label for="note-title">Note Title:</label>
+				<input type="text" id="note-title" />
+				<label for="note-desc">Note Desc:</label>
+				<textarea id="note-desc" rows="4"></textarea>
+				<button class="add-button">Add To Book</button>
+			</div>
+			<div class="notes-list" id="notes-list"></div>
+		</div>
+	</body>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.1/axios.min.js"></script>
+	<script>
+		const apiUrl =
+			"https://crudcrud.com/api/08c9b5771dd94d668c2fed6670f95db1/unicorns";
+
+		let totalNotes = 0;
+		document
+			.querySelector(".add-button")
+			.addEventListener("click", async () => {
+				const title = document.getElementById("note-title").value;
+				const desc = document.getElementById("note-desc").value;
+
+				if (title && desc) {
+					await axios.post(apiUrl, { title, description: desc });
+					totalNotes++;
+					displayUsers();
+				}
+				document.getElementById("note-title").value = "";
+				document.getElementById("note-desc").value = "";
+			});
+
+		async function displayUsers() {
+			const response = await axios.get(apiUrl);
+			const notes = response.data;
+			document.getElementById("total-notes").innerText =
+				"Total notes: " + notes.length;
+			document.getElementById("showing-notes").innerText = notes.length;
+
+			const notesList = document.getElementById("notes-list");
+			notesList.innerHTML = "";
+			notes.forEach((note) => {
+				const noteItem = document.createElement("div");
+				noteItem.innerHTML = `<h3 style="display: inline">${note.title}:</h3>
+                    <button style="display: inline" onclick="deleteNote('${note.id}')">Delete</button>
+                          <p>${note.description}  </p>`;
+				notesList.appendChild(noteItem);
+			});
+		}
+
+		async function deleteNote(id) {
+			await axios.delete(`${apiUrl}/${id}`);
+			totalNotes--;
+			displayUsers();
+		}
+
+		document
+			.getElementById("search")
+			.addEventListener("input", async (event) => {
+				const searchTerm = event.target.value;
+				const response = await axios.get(`${apiUrl}?search=${searchTerm}`);
+				const notes = response.data;
+				document.getElementById("total-notes").innerText =
+					"Total notes: " + totalNotes;
+				document.getElementById("showing-notes").innerText = notes.length;
+
+				const notesList = document.getElementById("notes-list");
+				notesList.innerHTML = "";
+				notes.forEach((note) => {
+					const noteItem = document.createElement("div");
+					noteItem.innerHTML = `<h3>${note.title}</h3>
+                              <button onclick="deleteNote('${note.id}')">Delete</button>
+                              <p>${note.description}</p>`;
+					notesList.appendChild(noteItem);
+				});
+			});
+	</script>
+</html>
